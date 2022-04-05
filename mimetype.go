@@ -68,9 +68,20 @@ func Detect(data []byte) (mimetype string) {
 		if b[1] == 0x3c && b[2] == 0x61 && b[3] == 0x72 && b[4] == 0x63 && b[5] == 0x68 && b[6] == 0x3e && b[7] == 0x0A {
 			return "application/x-archive"
 		}
+	case 0x23:
+		if b[1] == 0x21 && b[2] == 0x41 && b[3] == 0x4D && b[4] == 0x52 {
+			return "audio/amr"
+		}
 	case 0x25:
-		if b[1] == 0x50 && b[2] == 0x44 && b[3] == 0x46 && b[4] == 0x2D {
-			return "application/pdf"
+		switch b[1] {
+		case 0x21:
+			if b[2] == 0x50 && b[3] == 0x53 && b[4] == 0x2D && b[5] == 0x41 && b[6] == 0x64 && b[7] == 0x6F {
+				return "application/postscript"
+			}
+		case 0x50:
+			if b[2] == 0x44 && b[3] == 0x46 && b[4] == 0x2D {
+				return "application/pdf"
+			}
 		}
 	case 0x2E:
 		switch b[1] {
@@ -90,17 +101,29 @@ func Detect(data []byte) (mimetype string) {
 	case 0x3C:
 		switch b[1] {
 		case 0x21:
+			b = bytes.ToUpper(b)
 			if bytes.Compare(b[2:16], []byte("<!DOCTYPE HTML")) == 0 {
 				return "text/html"
 			}
 		case 0x3F:
-			if b[2] == 0x78 && b[3] == 0x6D && b[4] == 0x6C {
+			b = bytes.ToUpper(b)
+			if bytes.Index(b, []byte("<SVG")) >= 0 || bytes.Index(b, []byte("<!DOCTYPE SVG")) >= 0 {
+				return "image/svg+xml"
+
+			} else if b[2] == 0x78 && b[3] == 0x6D && b[4] == 0x6C {
 				return "text/xml"
 			}
 		}
 	case 0x37:
-		if b[1] == 0x7A && b[2] == 0xBC && b[3] == 0xAF && b[4] == 0x27 && b[5] == 0x1C {
-			return "application/x-7z-compressed"
+		switch b[1] {
+		case 0x7A:
+			if b[2] == 0xBC && b[3] == 0xAF && b[4] == 0x27 && b[5] == 0x1C {
+				return "application/x-7z-compressed"
+			}
+		case 0xA4:
+			if b[3] == 0x30 && b[4] == 0xEC {
+				return "application/zstd"
+			}
 		}
 	case 0x38:
 		if b[1] == 0x42 && b[2] == 0x50 && b[3] == 0x53 {
@@ -254,16 +277,21 @@ func Detect(data []byte) (mimetype string) {
 			if b[2] == 0x46 && b[3] == 0x46 {
 				switch b[8] {
 				case 0x57:
-					if b[9] == 0x41 && b[10] == 0x56 && b[11] == 0x45 {
-						return "audio/wav"
+					switch b[9] {
+					case 0x41:
+						if b[10] == 0x56 && b[11] == 0x45 {
+							return "audio/wav"
+						}
+					case 0x45:
+						if b[10] == 0x42 && b[11] == 0x50 {
+							return "image/webp"
+						}
 					}
 				case 0x41:
 					if b[9] == 0x56 && b[10] == 0x49 && b[11] == 0x20 {
 						return "video/avi"
 					}
 				}
-
-				return "image/webp"
 			}
 		case 0x61:
 			if b[2] == 0x72 && b[3] == 0x21 && b[4] == 0x1A && b[5] == 0x07 {
@@ -275,6 +303,10 @@ func Detect(data []byte) (mimetype string) {
 	case 0x5A:
 		if b[1] == 0x4D {
 			return "application/x-msdos-program"
+		}
+	case 0x5F:
+		if b[1] == 0x27 && b[2] == 0xA8 && b[3] == 0x89 {
+			return "application/java-archive"
 		}
 	case 0x61:
 		if b[1] == 0x73 && b[2] == 0x6D {
