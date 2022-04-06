@@ -5,18 +5,6 @@ import (
 	_ "embed"
 )
 
-//go:embed testdata/img.png
-var PNG []byte
-
-//go:embed testdata/img.jpg
-var JPEG []byte
-
-//go:embed testdata/video.mp4
-var MP4 []byte
-
-//go:embed testdata/document.pdf
-var PDF []byte
-
 ////go:embed testdata/document.xlsx
 //var Xlsx []byte
 
@@ -53,7 +41,18 @@ func Detect(data []byte) (mimetype string) {
 			return "image/x-icon"
 		}
 	case 0x18:
-		if b[1] == 0x66 && b[2] == 0x74 && b[3] == 0x79 && b[4] == 0x70 && b[5] == 0x6D {
+		if b[1] == 0x66 && b[2] == 0x74 && b[3] == 0x79 && b[4] == 0x70 {
+			switch b[5] {
+			case 0x68:
+				if b[6] == 0x65 && b[7] == 0x69 && b[8] == 0x63 {
+					return "image/heic"
+				}
+			default:
+				if b[17] == 0x68 && b[18] == 0x65 && b[19] == 0x69 && b[20] == 0x63 {
+					return "image/heic"
+				}
+			}
+
 			return "video/mp4"
 		}
 	case 0x1A:
@@ -112,6 +111,9 @@ func Detect(data []byte) (mimetype string) {
 
 			} else if b[2] == 0x78 && b[3] == 0x6D && b[4] == 0x6C {
 				return "text/xml"
+
+			} else if bytes.Index(b, []byte("<?PHP")) > -1 {
+				return "application/x-php"
 			}
 		}
 	case 0x37:
@@ -316,6 +318,10 @@ func Detect(data []byte) (mimetype string) {
 		if b[1] == 0x50 && b[2] == 0x20 {
 			return "image/jpeg"
 		}
+	case 0x64:
+		if b[1] == 0x38 && b[2] == 0x3A && b[3] == 0x61 && b[4] == 0x6E && b[5] == 0x6E && b[6] == 0x6F && b[7] == 0x75 && b[8] == 0x6E && b[9] == 0x63 && b[10] == 0x65 {
+			return "application/x-bittorrent"
+		}
 	case 0x66:
 		switch b[1] {
 		case 0x4C:
@@ -366,9 +372,11 @@ func Detect(data []byte) (mimetype string) {
 			return "application/x-xar"
 		}
 	case 0x7B:
-		if b[1] == 0x7B && b[2] == 0x5C && b[3] == 0x72 && b[4] == 0x74 && b[5] == 0x66 && b[6] == 0x31 {
+		if b[1] == 0x5C && b[2] == 0x72 && b[3] == 0x74 && b[4] == 0x66 {
 			return "text/rtf"
 		}
+
+		return "application/json"
 	case 0x89:
 		switch b[1] {
 		case 0x50:
