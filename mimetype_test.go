@@ -2,81 +2,151 @@ package mimetype
 
 import (
 	_ "embed"
+	"github.com/tee-ck/go-mimetype/test/testdata"
 	"net/http"
 	"testing"
 )
 
-//go:embed test/testdata/img.png
-var PNG []byte
-
-//go:embed test/testdata/img.jpg
-var JPEG []byte
-
-//go:embed test/testdata/video.mp4
-var MP4 []byte
-
-//go:embed test/testdata/document.pdf
-var PDF []byte
-
-//go:embed test/testdata/img.heic
-var HEIC []byte
-
-func BenchmarkJPG(b *testing.B) {
+func BenchmarkJPEG(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Detect(JPEG)
+		Detect(testdata.JPEG)
 	}
 }
 
-func BenchmarkNetJPG(b *testing.B) {
+func BenchmarkNetJPEG(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		http.DetectContentType(JPEG)
+		http.DetectContentType(testdata.JPEG)
 	}
 }
 
 func BenchmarkPNG(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Detect(PNG)
+		Detect(testdata.PNG)
 	}
 }
 
 func BenchmarkNetPNG(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		http.DetectContentType(PNG)
-	}
-}
-
-func BenchmarkMP4(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		Detect(MP4)
-	}
-}
-
-func BenchmarkNetMP4(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		http.DetectContentType(MP4)
-	}
-}
-
-func BenchmarkPDF(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		Detect(PDF)
-	}
-}
-
-func BenchmarkNetPDF(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		http.DetectContentType(PDF)
+		http.DetectContentType(testdata.PNG)
 	}
 }
 
 func BenchmarkHEIC(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Detect(HEIC)
+		Detect(testdata.HEIC)
 	}
 }
 
 func BenchmarkNetHEIC(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		http.DetectContentType(HEIC)
+		http.DetectContentType(testdata.HEIC)
+	}
+}
+
+func BenchmarkOGG(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Detect(testdata.OGG)
+	}
+}
+
+func BenchmarkNetOGG(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		http.DetectContentType(testdata.OGG)
+	}
+}
+
+func BenchmarkM4A(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Detect(testdata.M4A)
+	}
+}
+
+func BenchmarkNetM4A(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		http.DetectContentType(testdata.M4A)
+	}
+}
+
+func BenchmarkMP4(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Detect(testdata.MP4)
+	}
+}
+
+func BenchmarkNetMP4(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		http.DetectContentType(testdata.MP4)
+	}
+}
+
+func BenchmarkHEVC(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Detect(testdata.HEVC)
+	}
+}
+
+func BenchmarkNetHEVC(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		http.DetectContentType(testdata.HEVC)
+	}
+}
+
+func BenchmarkWEBM(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Detect(testdata.WEBM)
+	}
+}
+
+func BenchmarkNetWEBM(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		http.DetectContentType(testdata.WEBM)
+	}
+}
+
+func BenchmarkPDF(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Detect(testdata.PDF)
+	}
+}
+
+func BenchmarkNetPDF(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		http.DetectContentType(testdata.PDF)
+	}
+}
+
+func BenchmarkRAR(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Detect(testdata.RAR)
+	}
+}
+
+func BenchmarkNetRAR(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		http.DetectContentType(testdata.RAR)
+	}
+}
+
+func BenchmarkZIP(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Detect(testdata.ZIP)
+	}
+}
+
+func BenchmarkNetZIP(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		http.DetectContentType(testdata.ZIP)
+	}
+}
+
+func BenchmarkJSON(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Detect(testdata.JSON)
+	}
+}
+
+func BenchmarkNetJSON(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		http.DetectContentType(testdata.JSON)
 	}
 }

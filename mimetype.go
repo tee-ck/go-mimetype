@@ -5,27 +5,19 @@ import (
 	_ "embed"
 )
 
-////go:embed testdata/document.xlsx
-//var Xlsx []byte
+func Detect(b []byte) (mimetype string) {
+	if b[0] < 0x21 {
+		for x := 0; x < len(b); x++ {
+			if b[x] == 0x00 || b[x] == 0x09 || b[x] == 0x0A || b[x] == 0x0C || b[x] == 0x0D || b[x] == 0x1C || b[x] == 0x20 {
+				continue
+			}
 
-func Detect(data []byte) (mimetype string) {
-	var x int
-	for x = 0; x < len(data); x++ {
-		if data[x] > 0x20 {
+			if x > 0 {
+				b = b[x:]
+			}
 			break
 		}
-
-		if data[x] == 0x00 || data[x] == 0x09 || data[x] == 0x0A || data[x] == 0x0C || data[x] == 0x0D || data[x] == 0x20 {
-			continue
-		}
-
-		break
 	}
-	y := x + 768
-	if y > len(data) {
-		y = len(data)
-	}
-	b := data[x:y]
 
 	switch b[0] {
 	case 0x01:
@@ -57,7 +49,12 @@ func Detect(data []byte) (mimetype string) {
 		}
 	case 0x1A:
 		if b[1] == 0x45 && b[2] == 0xDF && b[3] == 0xA3 {
-			return "video/webm"
+			if b[4] == 0x9F {
+				return "video/webm"
+			}
+
+			// HEVC video
+			return "video/mp4"
 		}
 	case 0x1F:
 		if b[1] == 0x8B {
@@ -242,7 +239,7 @@ func Detect(data []byte) (mimetype string) {
 			}
 		case 0x67:
 			if b[2] == 0x67 && b[3] == 0x53 {
-				return "application/ogg"
+				return "audio/ogg"
 			}
 		}
 	case 0x50:
@@ -336,7 +333,7 @@ func Detect(data []byte) (mimetype string) {
 						return "video/3gpp"
 					}
 				case 0x4D:
-					if b[5] == 0x34 && b[6] == 0x41 && b[7] == 0x20 {
+					if b[5] == 0x34 && b[6] == 0x41 {
 						return "audio/mp4"
 					}
 				}
