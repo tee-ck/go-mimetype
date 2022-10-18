@@ -37,11 +37,11 @@ func Detect(b []byte) (mimetype string) {
 			switch b[5] {
 			case 0x4D:
 				if b[6] == 0x34 && b[7] == 0x41 && b[8] == 0x20 {
-					return "audio/m4a"
+					return "audio/m4a; codecs=mp4a.40.2"
 				}
 			case 0x64:
 				if b[6] == 0x61 && b[7] == 0x73 && b[8] == 0x68 {
-					return "audio/m4a"
+					return "audio/m4a; codecs=mp4a.40.2"
 				}
 			case 0x68:
 				if b[6] == 0x65 && b[7] == 0x69 && b[8] == 0x63 {
@@ -74,7 +74,7 @@ func Detect(b []byte) (mimetype string) {
 		}
 	case 0x23:
 		if b[1] == 0x21 && b[2] == 0x41 && b[3] == 0x4D && b[4] == 0x52 {
-			return "audio/amr"
+			return "audio/amr; codecs=amr"
 		}
 	case 0x25:
 		switch b[1] {
@@ -95,7 +95,7 @@ func Detect(b []byte) (mimetype string) {
 			}
 		case 0x73:
 			if b[2] == 0x6E && b[3] == 0x64 {
-				return "audio/basic"
+				return "audio/basic; codecs=au"
 			}
 		}
 	case 0x30:
@@ -181,7 +181,7 @@ func Detect(b []byte) (mimetype string) {
 			}
 		case 0x4F:
 			if b[2] == 0x52 && b[3] == 0x4D && b[8] == 0x41 && b[9] == 0x49 && b[10] == 0x46 && b[11] == 0x46 {
-				return "audio/aiff"
+				return "audio/aiff; codecs=aiff"
 			}
 		case 0x57:
 			if b[2] == 0x53 {
@@ -210,7 +210,7 @@ func Detect(b []byte) (mimetype string) {
 				}
 			case 0x44:
 				if b[3] == 0x43 {
-					return "audio/mp3"
+					return "audio/mp3; codecs=mp3"
 				}
 			}
 		}
@@ -234,7 +234,7 @@ func Detect(b []byte) (mimetype string) {
 			}
 		case 0x54:
 			if b[2] == 0x68 && b[3] == 0x64 {
-				return "audio/midi"
+				return "audio/midi; codecs=midi"
 			}
 		case 0x5A:
 			return "application/x-msdos-program"
@@ -247,7 +247,7 @@ func Detect(b []byte) (mimetype string) {
 			}
 		case 0x67:
 			if b[2] == 0x67 && b[3] == 0x53 {
-				return "audio/ogg"
+				return "audio/ogg; codecs=opus"
 			}
 		}
 	case 0x50:
@@ -287,7 +287,7 @@ func Detect(b []byte) (mimetype string) {
 					switch b[9] {
 					case 0x41:
 						if b[10] == 0x56 && b[11] == 0x45 {
-							return "audio/wav"
+							return "audio/wav; codecs=1"
 						}
 					case 0x45:
 						if b[10] == 0x42 && b[11] == 0x50 {
@@ -331,24 +331,24 @@ func Detect(b []byte) (mimetype string) {
 		switch b[1] {
 		case 0x4C:
 			if b[2] == 0x61 && b[3] == 0x43 {
-				return "audio/flac"
+				return "audio/flac; codecs=flac"
 			}
 		case 0x74:
 			if b[2] == 0x79 && b[3] == 0x70 {
 				switch b[4] {
 				case 0x33:
 					if b[5] == 0x67 && b[6] == 0x70 {
-						return "video/3gpp"
+						return "video/3gpp; codecs=mp4v.20.3"
 					}
 				case 0x4D:
 					if b[5] == 0x34 && b[6] == 0x41 && b[7] == 0x20 {
-						return "audio/m4a"
+						return "audio/m4a; codecs=mp4a.40.2"
 					}
 				case 0x64:
 					if b[5] == 0x61 && b[6] == 0x73 && b[7] == 0x68 {
 						if b[8] == 0x00 && b[9] == 0x00 && b[10] == 0x00 && b[11] == 0x00 {
 							if bytes.Compare(b[12:12+8], []byte("iso6mp41")) == 0 {
-								return "audio/m4a"
+								return "audio/m4a; codecs=mp4a.40.2"
 							}
 						}
 					}
@@ -441,9 +441,9 @@ func Detect(b []byte) (mimetype string) {
 	case 0xFF:
 		switch b[1] {
 		case 0xF1, 0xF9:
-			return "audio/aac"
+			return "audio/aac; codecs=mp4a.40.5"
 		case 0xFB, 0xF3, 0xF2:
-			return "audio/mp3"
+			return "audio/mp3; codecs=mp3"
 		case 0x4F:
 			if b[2] == 0xFF && b[3] == 0x51 {
 				return "image/jpeg"
