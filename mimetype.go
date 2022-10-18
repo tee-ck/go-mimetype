@@ -8,7 +8,7 @@ import (
 func Detect(b []byte) (mimetype string) {
 	if b[0] < 0x21 {
 		for x := 0; x < len(b); x++ {
-			if b[x] == 0x00 || b[x] == 0x09 || b[x] == 0x0A || b[x] == 0x0C || b[x] == 0x0D || b[x] == 0x1C || b[x] == 0x20 {
+			if b[x] == 0x00 || b[x] == 0x09 || b[x] == 0x0A || b[x] == 0x0C || b[x] == 0x0D || b[x] == 0x18 || b[x] == 0x1C || b[x] == 0x20 {
 				continue
 			}
 
@@ -35,6 +35,14 @@ func Detect(b []byte) (mimetype string) {
 	case 0x18:
 		if b[1] == 0x66 && b[2] == 0x74 && b[3] == 0x79 && b[4] == 0x70 {
 			switch b[5] {
+			case 0x4D:
+				if b[6] == 0x34 && b[7] == 0x41 && b[8] == 0x20 {
+					return "audio/m4a"
+				}
+			case 0x64:
+				if b[6] == 0x61 && b[7] == 0x73 && b[8] == 0x68 {
+					return "audio/m4a"
+				}
 			case 0x68:
 				if b[6] == 0x65 && b[7] == 0x69 && b[8] == 0x63 {
 					return "image/heic"
@@ -333,8 +341,16 @@ func Detect(b []byte) (mimetype string) {
 						return "video/3gpp"
 					}
 				case 0x4D:
-					if b[5] == 0x34 && b[6] == 0x41 {
-						return "audio/mp4"
+					if b[5] == 0x34 && b[6] == 0x41 && b[7] == 0x20 {
+						return "audio/m4a"
+					}
+				case 0x64:
+					if b[5] == 0x61 && b[6] == 0x73 && b[7] == 0x68 {
+						if b[8] == 0x00 && b[9] == 0x00 && b[10] == 0x00 && b[11] == 0x00 {
+							if bytes.Compare(b[12:12+8], []byte("iso6mp41")) == 0 {
+								return "audio/m4a"
+							}
+						}
 					}
 				}
 

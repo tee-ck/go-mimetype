@@ -5,12 +5,11 @@ import (
 	"fmt"
 )
 
+//go:embed testdata/files/audio.m4a
+var audio []byte
+
 func main() {
-	fmt.Printf("%b\n", 0x00)
-	fmt.Printf("%b\n", 0x09)
-	fmt.Printf("%b\n", 0x0A)
-	fmt.Printf("%b\n", 0x0C)
-	fmt.Printf("%b\n", 0x0D)
-	fmt.Printf("%b\n", 0x1C)
-	fmt.Printf("%b\n", 0x20)
+	for i, e := range audio[:48] {
+		fmt.Printf("%02d: %02X [%c]\n", i, e, rune(e))
+	}
 }
