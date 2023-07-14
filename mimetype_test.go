@@ -8,10 +8,17 @@ import (
 var (
 	//go:embed test/testdata/files/audio.m4a
 	audioM4A []byte
+
+	//go:embed test/testdata/files/video.mp4
+	videoMP4 []byte
 )
 
 func TestAudioM4A(t *testing.T) {
 	t.Log(Detect(audioM4A))
+}
+
+func TestVideoMP4(t *testing.T) {
+	t.Log(Detect(videoMP4))
 }
 
 //func BenchmarkJPEG(b *testing.B) {

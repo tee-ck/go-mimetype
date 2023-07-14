@@ -8,7 +8,7 @@ import (
 func Detect(b []byte) (mimetype string) {
 	if b[0] < 0x21 {
 		for x := 0; x < len(b); x++ {
-			if b[x] == 0x00 || b[x] == 0x09 || b[x] == 0x0A || b[x] == 0x0C || b[x] == 0x0D || b[x] == 0x18 || b[x] == 0x1C || b[x] == 0x20 {
+			if b[x] == 0x00 || b[x] == 0x09 || b[x] == 0x0A || b[x] == 0x0C || b[x] == 0x0D || b[x] == 0x14 || b[x] == 0x18 || b[x] == 0x1C || b[x] == 0x20 {
 				continue
 			}
 
